@@ -1,1 +1,1 @@
-# db_app
+# Simple database application written in C
