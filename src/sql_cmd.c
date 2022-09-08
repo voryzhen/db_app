@@ -3,24 +3,40 @@
 #include <stdio.h>
 #include <string.h>
 
+ParceSqlCmdResult parce_insert (InputBuffer* input_buffer, SqlCmd* cmd)
+{
+    cmd->type = SQL_CMD_INSERT;
+
+    char* keyword   = strtok(input_buffer->buffer, " ");
+    char* id_string = strtok(NULL, " ");
+    char* username  = strtok(NULL, " ");
+    char* email     = strtok(NULL, " ");
+
+    if (id_string == NULL || username == NULL || email == NULL)
+        return PARCE_SYNTAX_ERROR;
+
+    int id = atoi(id_string);
+    if (id < 0)
+        return PARCE_NEGATIVE_ID;
+
+    if (strlen(username) > COLUMN_USERNAME_SIZE)
+        return PARCE_STRING_TOO_LONG;
+
+    if (strlen(email) > COLUMN_EMAIL_SIZE)
+        return PARCE_STRING_TOO_LONG;
+
+    cmd->insert_row.id = id;
+    strcpy(cmd->insert_row.username, username);
+    strcpy(cmd->insert_row.email, email);
+
+    return PARCE_SUCCESS;
+}
+
 ParceSqlCmdResult parce_sql_cmd (InputBuffer* input_buffer, SqlCmd* cmd)
 {
     if (strncmp (input_buffer->buffer, "insert", 6) == 0)
     {
-        cmd->type = SQL_CMD_INSERT;
-
-        int cmd_args = sscanf(
-            input_buffer->buffer,
-            "insert %d %s %s",
-            &(cmd->insert_row.id),
-            cmd->insert_row.username,
-            cmd->insert_row.email
-        );
-
-        if (cmd_args < 3)
-            return PARCE_SYNTAX_ERROR;
-
-        return PARCE_SUCCESS;
+        return parce_insert(input_buffer, cmd);
     }
     if (strcmp (input_buffer->buffer, "select") == 0)
     {
@@ -88,6 +104,12 @@ void process_sql_cmd (InputBuffer* input_buffer, Table* table)
             break;
         case PARCE_UNDEFINED_CMD:
             printf ("Undefined sql command '%s'.\n", input_buffer->buffer);
+            break;
+        case PARCE_STRING_TOO_LONG:
+            printf("String is too long.\n");
+            break;
+        case PARCE_NEGATIVE_ID:
+            printf("ID must be positive.\n");
             break;
     }
 }
