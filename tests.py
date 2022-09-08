@@ -17,29 +17,33 @@ def execute_programm( input ):
 
     useless_cat_call.wait()
 
-    # print(output)
-    # print(errors)
-
     return output, errors
 
 def run_test ( name, input, expected ):
 
-    output, errors = execute_programm(inp1)
-    
-    if output == exp1: print ( name + " ok" )
+    output, errors = execute_programm(input)
+
+    if errors:
+        print ( name, "errors:" )
+        print ( errors )
+
+    if output == expected: print ( name + " ok" )
     else:
-        print ( "expected output:\n" )
+        print ( "expected output:" )
         print ( "[" + expected + "]" )
-        print ( "\n" )
-        print ( "real output\n" )
+        print ( "" )
+        print ( "real output:" )
         print ( "[" + output + "]" )
         print ( "\n" )
-    
+
+## tests below
 
 inp1 = "insert 1 user user@main.com\nselect\n.exit\n"
-inp2 = "insert 2 usasdasder user@main.com\nselect\n.exit\n"
-
 exp1 = "db > Executed.\ndb > (1, user, user@main.com)\nExecuted.\ndb > Executed.\n"
-exp2 = "db > Executed.\ndb > (1, usasdasder, user@main.com)\nExecuted.\ndb > Executed.\n"
 
-run_test ( "first test", inp1, exp1 )
+run_test ( "1 test", inp1, exp1 )
+
+inp2 = "insert 1 useruseruseruseruseruseruseruser12 user@main.com\nselect\n.exit\n"
+exp2 = "db > Executed.\ndb > (1, useruseruseruseruseruseruseruser12, user@main.com)\nExecuted.\ndb > Executed.\n"
+
+run_test ( "2 test", inp2, exp2 )
