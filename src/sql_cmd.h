@@ -4,6 +4,8 @@
 #include "input_buffer.h"
 #include "row.h"
 
+#include "table.h"
+
 typedef enum
 {
     PARCE_SUCCESS,
@@ -23,8 +25,17 @@ typedef struct
     Row insert_row;
 } SqlCmd;
 
+typedef enum
+{
+    EXECUTE_CMD_SUCCESS,
+    EXECUTE_CMD_TABLE_FULL
+} ExecuteCmdResult;
+
 ParceSqlCmdResult parce_sql_cmd (InputBuffer* input_buffer, SqlCmd* cmd);
-void execute_sql_cmd (SqlCmd* cmd);
-void process_sql_cmd (InputBuffer* input_buffer);
+void process_sql_cmd (InputBuffer* input_buffer, Table* table);
+
+ExecuteCmdResult execute_sql_cmd (SqlCmd* cmd, Table* table);
+ExecuteCmdResult execute_insert  (SqlCmd* cmd, Table* table);
+ExecuteCmdResult execute_select  (SqlCmd* cmd, Table* table);
 
 #endif
