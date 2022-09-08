@@ -23,7 +23,7 @@ void read_input (InputBuffer* input_buffer)
     input_buffer->buffer[bytes_read - 1] = 0;
 }
 
-void process_cmd (InputBuffer* input_buffer)
+void process_cmd (InputBuffer* input_buffer, Table* table)
 {
     if ( input_buffer->buffer[0] == '.' )
     {
@@ -32,17 +32,18 @@ void process_cmd (InputBuffer* input_buffer)
     }
     else
     {
-        process_sql_cmd (input_buffer);
+        process_sql_cmd (input_buffer, table);
     }
 }
 
 void run_db_app()
 {
     InputBuffer* input_buffer = create_input_buffer ();
+    Table* table = create_table();
     while (true)
     {
         print_prompt ();
         read_input   (input_buffer);
-        process_cmd  (input_buffer);
+        process_cmd  (input_buffer, table);
     }
 }
