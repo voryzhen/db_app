@@ -2,11 +2,13 @@
 #define SQL_CMD_H
 
 #include "input_buffer.h"
+#include "row.h"
 
 typedef enum
 {
     PARCE_SUCCESS,
-    PARCE_UNDEFINED_CMD
+    PARCE_UNDEFINED_CMD,
+    PARCE_SYNTAX_ERROR
 } ParceSqlCmdResult;
 
 typedef enum
@@ -18,6 +20,7 @@ typedef enum
 typedef struct
 {
     SqlCmdType type;
+    Row insert_row;
 } SqlCmd;
 
 ParceSqlCmdResult parce_sql_cmd (InputBuffer* input_buffer, SqlCmd* cmd);

@@ -8,6 +8,18 @@ ParceSqlCmdResult parce_sql_cmd (InputBuffer* input_buffer, SqlCmd* cmd)
     if (strncmp (input_buffer->buffer, "insert", 6) == 0)
     {
         cmd->type = SQL_CMD_INSERT;
+
+        int cmd_args = sscanf(
+            input_buffer->buffer,
+            "insert %d %s %s",
+            &(cmd->insert_row.id),
+            cmd->insert_row.username,
+            cmd->insert_row.email
+        );
+
+        if (cmd_args < 3)
+            return PARCE_SYNTAX_ERROR;
+
         return PARCE_SUCCESS;
     }
     if (strcmp (input_buffer->buffer, "select") == 0)
