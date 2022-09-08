@@ -1,6 +1,7 @@
 #include "meta_cmd.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 MetaCmdResult execute_meta_cmd (InputBuffer* input_buffer)
 {
