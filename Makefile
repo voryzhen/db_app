@@ -1,2 +1,2 @@
 all:
-	gcc src/main.c -o db
+	gcc src/*.c -o db
