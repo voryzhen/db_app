@@ -7,6 +7,6 @@
 void print_prompt ();
 void read_input   (InputBuffer* input_buffer);
 void process_cmd  (InputBuffer* input_buffer, Table* table);
-void run_db_app   ();
+void run_db_app   (char* filename);
 
 #endif

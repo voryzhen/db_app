@@ -27,7 +27,7 @@ void process_cmd (InputBuffer* input_buffer, Table* table)
 {
     if ( input_buffer->buffer[0] == '.' )
     {
-        if ( execute_meta_cmd (input_buffer) == META_CMD_UNDEFINED_CMD )
+        if ( execute_meta_cmd (input_buffer, table) == META_CMD_UNDEFINED_CMD )
             printf("Undefined meta command '%s'\n", input_buffer->buffer);
     }
     else
@@ -36,10 +36,11 @@ void process_cmd (InputBuffer* input_buffer, Table* table)
     }
 }
 
-void run_db_app()
+void run_db_app(char* filename)
 {
+    Table* table = open_db(filename);
     InputBuffer* input_buffer = create_input_buffer ();
-    Table* table = create_table();
+    
     while (true)
     {
         print_prompt ();

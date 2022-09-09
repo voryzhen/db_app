@@ -1,4 +1,5 @@
 #include "row.h"
+#include "row_const.h"
 
 #include <string.h>
 #include <stdio.h>
