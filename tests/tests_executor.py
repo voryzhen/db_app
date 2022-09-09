@@ -1,11 +1,13 @@
 import subprocess
 import os
 
+test_dir = os.path.abspath(os.path.dirname(__file__))
+
 def execute_programm( input ):
 
     useless_cat_call = subprocess.Popen(
     
-        [ os.path.abspath(os.path.dirname(__file__)) + "/../db" ],
+        [ test_dir + "/../db" ],
         
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
@@ -40,4 +42,5 @@ def run_test ( name, input, expected ):
 import tests_data
 
 for [ name, input, output ] in tests_data.tests_data:
+    os.remove( test_dir + "/../db.dat" )
     run_test ( name, input, output )
