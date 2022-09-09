@@ -1,10 +1,11 @@
 import subprocess
+import os
 
 def execute_programm( input ):
 
     useless_cat_call = subprocess.Popen(
     
-        ["../db"],
+        [ os.path.abspath(os.path.dirname(__file__)) + "/../db" ],
         
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
