@@ -4,7 +4,7 @@ def execute_programm( input ):
 
     useless_cat_call = subprocess.Popen(
     
-        ["./db"],
+        ["../db"],
         
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
@@ -27,23 +27,16 @@ def run_test ( name, input, expected ):
         print ( name, "errors:" )
         print ( errors )
 
-    if output == expected: print ( name + " ok" )
+    if output == expected: print ( "Test: " + name + ";\nStatus: ok;\n" )
     else:
+        print ( "Test: " + name + ";\nStatus: error:\n" )
         print ( "expected output:" )
         print ( "[" + expected + "]" )
         print ( "" )
         print ( "real output:" )
-        print ( "[" + output + "]" )
-        print ( "\n" )
+        print ( "[" + output + "]\n" )
 
-## tests below
+import tests_data
 
-inp1 = "insert 1 user user@main.com\nselect\n.exit\n"
-exp1 = "db > Executed.\ndb > (1, user, user@main.com)\nExecuted.\ndb > Executed.\n"
-
-run_test ( "1 test", inp1, exp1 )
-
-inp2 = "insert 1 useruseruseruseruseruseruseruser12 user@main.com\nselect\n.exit\n"
-exp2 = "db > Executed.\ndb > (1, useruseruseruseruseruseruseruser12, user@main.com)\nExecuted.\ndb > Executed.\n"
-
-run_test ( "2 test", inp2, exp2 )
+for [ name, input, output ] in tests_data.tests_data:
+    run_test ( name, input, output )
