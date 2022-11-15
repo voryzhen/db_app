@@ -1,5 +1,7 @@
 #include "sql_cmd.h"
 
+#include "cursor.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -55,8 +57,9 @@ ExecuteCmdResult execute_insert(SqlCmd* cmd, Table* table)
     }
 
     Row* row_to_insert = &(cmd->insert_row);
+    Cursor* cursor = table_end(table);
 
-    serialize_row(row_to_insert, row_slot(table, table->num_rows));
+    serialize_row(row_to_insert, cursor_value(cursor));
     table->num_rows += 1;
 
     return EXECUTE_CMD_SUCCESS;
@@ -64,12 +67,17 @@ ExecuteCmdResult execute_insert(SqlCmd* cmd, Table* table)
 
 ExecuteCmdResult execute_select(SqlCmd* cmd, Table* table)
 {
+    Cursor* cursor = table_start(table);
     Row row;
-    for (uint32_t i = 0; i < table->num_rows; i++)
+
+    while (!(cursor->end_of_table))
     {
-        deserialize_row(row_slot(table, i), &row);
+        deserialize_row(cursor_value(cursor), &row);
         print_row(&row);
+        cursor_advance(cursor);
     }
+
+    free(cursor);
     return EXECUTE_CMD_SUCCESS;
 }
 
